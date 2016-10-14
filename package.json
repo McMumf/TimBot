@@ -1,0 +1,8 @@
+{
+  "name": "Tim-s-Bot",
+  "Version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "discord.js": "*"
+  }
+}
