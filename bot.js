@@ -41,15 +41,14 @@ bot.on('message', message => {
     var length;
 
     var length = findID();
-    console.log(length);
 
     var newQuote = {
       "id": length,
       "quote": toBeQuotes
     }
-    message.reply("Quote added as " + newQuote.id);
-    
     addQuotes(newQuote);
+    message.reply("Quote added as " + newQuote.id);
+
   }
 
   if (message.content === '!quote') {
@@ -62,13 +61,54 @@ bot.on('message', message => {
     message.reply(quoteReply);
   }
 
-  /*if (message.content.startsWith('!quote id')) {
+  if (message.content.startsWith('!quote id')) {
     var quoteID = spliceArguments(message.content)[1];
     var quoteFile = fs.readFileSync('./quoteFile.json');
     var quote = JSON.parse(quoteFile);
-    var reply = "" + quote[quoteID].quote;
-    message.reply(reply);
-  }*/
+    if(quoteID > quote.length-1){
+      message.reply("ERROR 404: Quote not found")
+    } else {
+      var reply = "" + quote[quoteID].quote;
+      message.reply(reply);
+    }
+  }
+
+  //Adds an image to the quotes array and does message things
+  if(message.content.startsWith('!image add')) {
+    var toBeImage = spliceArguments(message.content)[1];
+
+    var length;
+
+    var length = findIdImage();
+
+    var newImage = {
+      "id": length,
+      "image": toBeImage
+    }
+    addImage(newImage);
+    message.reply("Image added as " + newImage.id);
+
+  }
+
+  if (message.content === '!image') {
+    var imageFile = fs.readFileSync('./images.json');
+    var image = JSON.parse(imageFile);
+    var randomImage = Math.floor((Math.random() * image.length));
+    imageReply = image[randomImage].image;
+    message.reply(imageReply);
+  }
+
+  if (message.content.startsWith('!image id')) {
+    var imageID = spliceArguments(message.content)[1];
+    var imageFile = fs.readFileSync('./images.json');
+    var image = JSON.parse(imageFile);
+    if(imageID > image.length-1){
+      message.reply("ERROR 404: Image not found")
+    } else {
+      var reply = "" + image[imageID].image;
+      message.reply(reply);
+    }
+  }
 
 });
 
@@ -89,12 +129,31 @@ function addQuotes(object) {
   fs.writeFileSync('./quoteFile.json', quoteJSON);
 }
 
+function addImage(object) {
+  var imageFile = fs.readFileSync('./images.json');
+  var image = JSON.parse(imageFile);
+  image.push(object);
+  var imageJSON = JSON.stringify(image);
+  fs.writeFileSync('./images.json', imageJSON);
+}
+
 //For finding the highest id in quoteFile.json to find the next id of the newest quote
-function findID (length) {
-  var jsonLength
+function findIdQuote (length) {
+  var jsonLength;
   var quoteFile = fs.readFileSync('./quoteFile.json');
   var quote = JSON.parse(quoteFile);
   jsonLength = quote.length + 1;
+  //console.log(quote[1].id);
+  //console.log(jsonLength);
+  return jsonLength;
+}
+
+//For finding the highest id in quoteFile.json to find the next id of the newest quote
+function findIdImage(length) {
+  var jsonLength;
+  var imageFile = fs.readFileSync('./images.json');
+  var image = JSON.parse(imageFile);
+  jsonLength = image.length + 1;
   //console.log(quote[1].id);
   //console.log(jsonLength);
   return jsonLength;
