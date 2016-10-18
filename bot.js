@@ -1,9 +1,11 @@
 var Discord = require('discord.js');
 var bot = new Discord.Client();
+var fs = require('fs');
+
 const token = 'MjAyMjQ4MDM1NzA5ODc4Mjcy.CuKvWw.vvyeOvxAgQCfNDRdylU4m_0V_Dg'
-var quotes = ["I CAN'T HEAR YOU"];
-var quotesLength = quotes.length;
-console.log(quotes.length);
+//var quotesLength = quotes.length;
+//console.log(quotes.length);
+var quoteFile = require('./quoteFile.json');
 
 bot.on('ready', () => {
   console.log('I am ready!');
@@ -35,9 +37,17 @@ bot.on('message', message => {
   //Adds a quote to the quotes array and does message things
   if(message.content.startsWith('!quote add')) {
     var toBeQuotes = spliceArguments(message.content)[1];
-    console.log(toBeQuotes);
-    quotes.push(toBeQuotes);
-    var length = quotes.length - 1;
+
+    
+
+    newThing = {
+      id
+      "quote": toBeQuotes
+    }
+
+    fs.writeFile('quoteFile.json', JSON.stringify(obj), function (err) {
+      console.log(err);
+    });
     message.reply("Quote added as " + length);
     console.log(quotes.length);
   }
