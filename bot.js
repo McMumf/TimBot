@@ -18,9 +18,14 @@ bot.on('message', message => {
     message.reply('pong');
   }
 
-  //Returns the User's avatar
-  if(message.content === '!avatar') {
-    message.reply(message.author.avatarURL);
+  //Displays commands
+  if(message.content === "!help") {
+    var commands = ["ping: returns pong", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
+                  "!quote: returns a random quote", "!image add [link]: adds an image (must be a link to an url)",
+                  "!image id [id]: returns a specific image", "!image: returns a random image",
+                  "!tally add [Subject]: Adds a new subject to tally",
+                  "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies"];
+    message.reply(commands);
   }
 
   //Returns the result of a virtually flipped coin in either heads or tails
@@ -40,7 +45,7 @@ bot.on('message', message => {
 
     var length;
 
-    var length = findID();
+    var length = findIdQuote();
 
     var newQuote = {
       "id": length,
@@ -110,6 +115,46 @@ bot.on('message', message => {
     }
   }
 
+  //Adds an image to the quotes array and does message things
+  if(message.content.startsWith('!tally add')) {
+    var toBeTally = spliceArguments(message.content)[1];
+
+    var newTally = {
+      "id": toBeTally,
+      "tally": 0
+    }
+    addTally(newTally);
+    message.reply("Tally added as " + newTally.id);
+
+  }
+
+  //Replies with a total tally
+  if(message.content.startsWith('!tally plus')) {
+    var newTally = spliceArguments(message.content)[1];
+    var tallyFile = fs.readFileSync('./tally.json');
+    var tally = JSON.parse(tallyFile);
+    //console.log(tally);
+    for(var i = 0; i < tally.length; i++) {
+      if(tally[i].id == newTally) {
+        tally[i].tally += 1;
+        message.reply(tally[i].id + " is now at " + tally[i].tally);
+      }
+    }
+    var tallyJSON = JSON.stringify(tally);
+    fs.writeFileSync('./tally.json', tallyJSON);
+  }
+
+  if (message.content === '!tally') {
+    var tallyFile = fs.readFileSync('./tally.json');
+    var tally = JSON.parse(tallyFile);
+    var totalTally = "";
+    for(var i = 0; i < tally.length; i++) {
+      totalTally += tally[i].id + ": " + tally[i].tally + ",\n";
+    }
+    console.log(totalTally);
+    message.reply(totalTally);
+  }
+
 });
 
 //For splicing of commands
@@ -129,12 +174,22 @@ function addQuotes(object) {
   fs.writeFileSync('./quoteFile.json', quoteJSON);
 }
 
+//For adding an new image link
 function addImage(object) {
   var imageFile = fs.readFileSync('./images.json');
   var image = JSON.parse(imageFile);
   image.push(object);
   var imageJSON = JSON.stringify(image);
   fs.writeFileSync('./images.json', imageJSON);
+}
+
+//For adding a new person to be tallied
+function addTally(object) {
+  var tallyFile = fs.readFileSync('./tally.json');
+  var tally = JSON.parse(tallyFile);
+  tally.push(object);
+  var tallyJSON = JSON.stringify(tally);
+  fs.writeFileSync('./tally.json', tallyJSON);
 }
 
 //For finding the highest id in quoteFile.json to find the next id of the newest quote
