@@ -51,12 +51,36 @@ bot.on('message', message => {
       "id": length,
       "quote": toBeQuotes
     }
-    addQuotes(newQuote);
+    addQuote(newQuote);
     message.reply("Quote added as " + newQuote.id);
-
   }
 
-  if (message.content === '!quote') {
+  if (message.content.startsWith('!quote id')) {
+    var quoteID = spliceArguments(message.content)[1];
+    var quoteFile = fs.readFileSync('./quoteFile.json');
+    var quote = JSON.parse(quoteFile);
+    var checker;
+    console.log(quoteID);
+    for(var i = 0; i < (quote.length); i++) {
+      if(quote[i].id == quoteID) {
+        //console.log("HERE: " + quote[i].id);
+        checker = quote[i].id;
+      }
+    }
+    if(quoteID > quote.length){
+      message.reply("ERROR 404: Quote not found")
+    } else if (checker == null) {
+      message.reply("ERROR 404: Check yo use of commands fool!");
+    } else {
+      var reply = "";
+      for(var i = 0; i < quote.length; i++) {
+        if(quote[i].id == quoteID) {
+          reply = "" + quote[i].quote;
+        }
+      }
+      message.reply(reply);
+    }
+  } else if (message.content === '!quote') {
     var quoteFile = fs.readFileSync('./quoteFile.json');
     var quote = JSON.parse(quoteFile);
     var randomQuote = Math.floor((Math.random() * quote.length));
@@ -66,19 +90,8 @@ bot.on('message', message => {
     message.reply(quoteReply);
   }
 
-  if (message.content.startsWith('!quote id')) {
-    var quoteID = spliceArguments(message.content)[1];
-    var quoteFile = fs.readFileSync('./quoteFile.json');
-    var quote = JSON.parse(quoteFile);
-    if(quoteID > quote.length-1){
-      message.reply("ERROR 404: Quote not found")
-    } else {
-      var reply = "" + quote[quoteID].quote;
-      message.reply(reply);
-    }
-  }
 
-  //Adds an image to the quotes array and does message things
+  //Adds an image to the image array and does message things
   if(message.content.startsWith('!image add')) {
     var toBeImage = spliceArguments(message.content)[1];
 
@@ -107,15 +120,30 @@ bot.on('message', message => {
     var imageID = spliceArguments(message.content)[1];
     var imageFile = fs.readFileSync('./images.json');
     var image = JSON.parse(imageFile);
-    if(imageID > image.length-1){
+    var checker;
+    for(var i = 0; i < (image.length); i++) {
+      if(image[i].id == imageID) {
+        //console.log("HERE: " + quote[i].id);
+        checker = image[i].id;
+      }
+    }
+
+    if(imageID > image.length){
       message.reply("ERROR 404: Image not found")
+    } else if (checker == null) {
+      message.reply("ERROR 404: Check yo use of commands fool!");
     } else {
-      var reply = "" + image[imageID].image;
+      var reply = "";
+      for(var i = 0; i < image.length; i++) {
+        if(image[i].id == imageID) {
+          reply = "" + image[i].image;
+        }
+      }
       message.reply(reply);
     }
   }
 
-  //Adds an image to the quotes array and does message things
+  //Adds a tally to the tally array and does message things
   if(message.content.startsWith('!tally add')) {
     var toBeTally = spliceArguments(message.content)[1];
 
@@ -166,7 +194,7 @@ function spliceArguments(message, after) {
 }
 
 //For addings quotes to quoteFile.json
-function addQuotes(object) {
+function addQuote(object) {
   var quoteFile = fs.readFileSync('./quoteFile.json');
   var quote = JSON.parse(quoteFile);
   quote.push(object);
