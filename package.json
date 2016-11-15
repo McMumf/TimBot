@@ -3,6 +3,7 @@
   "Version": "0.0.1",
   "private": true,
   "dependencies": {
-    "discord.js": "*"
+    "discord.js": "*",
+    "discord.js-music": "*"
   }
 }

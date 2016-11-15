@@ -1,4 +1,5 @@
 var Discord = require('discord.js');
+var music = require('discord.js-music');
 var bot = new Discord.Client();
 var fs = require('fs');
 
@@ -181,6 +182,12 @@ bot.on('message', message => {
     }
     console.log(totalTally);
     message.reply(totalTally);
+  }
+
+  if (message.content === '!play') {
+    bot.reply('joined');
+    bot.joinVoiceChannel('144570133958885376');
+    music.play('https://www.youtube.com/watch?v=TzaBak8o5UQ');
   }
 
 });
