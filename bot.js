@@ -185,7 +185,7 @@ bot.on('message', message => {
   }
 
   if (message.content === '!play') {
-    bot.reply('joined');
+    message.reply('joined');
     bot.joinVoiceChannel('144570133958885376');
     music.play('https://www.youtube.com/watch?v=TzaBak8o5UQ');
   }
