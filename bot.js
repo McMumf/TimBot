@@ -184,11 +184,11 @@ bot.on('message', message => {
     message.reply(totalTally);
   }
 
-  if (message.content === '!play') {
+  /*if (message.content === '!play') {
     message.reply('joined');
-    client.VoiceChannel('144570133958885376');
+    bot.joinVoiceChannel('144570133958885376');
     music.play('https://www.youtube.com/watch?v=TzaBak8o5UQ');
-  }
+  }*/
 
 });
 
