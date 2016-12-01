@@ -101,7 +101,7 @@ bot.on('message', message => {
     var length = findIdImage();
 
     var newImage = {
-      "id": length,
+      "id": length, 
       "image": toBeImage
     }
     addImage(newImage);
