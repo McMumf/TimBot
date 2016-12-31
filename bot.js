@@ -239,7 +239,7 @@ bot.on('message', message => {
 										"Very doubtful"];
 
 			var result = Math.floor((Math.random() * sayings.length) + 0);
-			bot.reply(message, sayings[result]);
+			message.reply(sayings[result]);
     }
 
     if(message.content.startsWith('!lmgtfy')) {
