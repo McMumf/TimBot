@@ -1,15 +1,19 @@
 var Discord = require('discord.js');
-var music = require('discord.js-music');
 var bot = new Discord.Client();
 var fs = require('fs');
 
+//Uncomment before pushing to repository
 const token = 'MjAyMjQ4MDM1NzA5ODc4Mjcy.CuKvWw.vvyeOvxAgQCfNDRdylU4m_0V_Dg'
-//var quotesLength = quotes.length;
-//console.log(quotes.length);
-var quoteFile = require('./quoteFile.json');
+
+//Comment out before pushing to repository
+//const token = 'MjY0MTY1ODU3MTk2NzY5Mjgy.C0cnUA.kc8VXfLItsVGSm-Hzl1pfb790zI'
 
 bot.on('ready', () => {
   console.log('I am ready!');
+});
+
+bot.on('serverNewMember', (server, user) => {
+  bot.sendMessage(user, "Weclome to " + server.name);
 });
 
 bot.on('message', message => {
@@ -21,17 +25,13 @@ bot.on('message', message => {
 
   //Displays commands
   if(message.content === "!help") {
-    var commands = ["ping: returns pong", "RELEASE THE KRAKEN: releases the kracken", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
+    var commands = ["ping: returns pong", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
                   "!quote: returns a random quote", "!image add [link]: adds an image (must be a link to an url)",
                   "!image id [id]: returns a specific image", "!image: returns a random image",
                   "!tally add [Subject]: Adds a new subject to tally",
-                  "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies"];
+                  "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies", "!8ball: Magic 8 Ball",
+                  "!lmgtfy: Let Me Google that for You"];
     message.reply(commands);
-  }
-
-  //Replies with an image of a hella cute kraken
-  if(message.content === "RELEASE THE KRAKEN") {
-    message.reply("http://41.media.tumblr.com/8c9b98a7f1f363f1f05f37c0af7fc7dc/tumblr_mjxo87KyNp1rldo5co1_1280.jpg");
   }
 
   //Returns the result of a virtually flipped coin in either heads or tails
@@ -86,16 +86,29 @@ bot.on('message', message => {
       }
       message.reply(reply);
     }
-  } else if (message.content === '!quote') {
+  }  else if (message.content === '!quote') {
     var quoteFile = fs.readFileSync('./quoteFile.json');
     var quote = JSON.parse(quoteFile);
-    var randomQuote = Math.floor((Math.random() * quote.length));
-    console.log(randomQuote);
-    quoteReply = quote[randomQuote].quote;
+    var randomID = Math.floor((Math.random() * quote.length));
+    console.log(randomID);
+    quoteReply = quote[randomID].quote;
     console.log(quoteReply);
     message.reply(quoteReply);
   }
 
+  if (message.content === '!quoteList') {
+    var quoteFile = fs.readFileSync('./quoteFile.json');
+    var quote = JSON.parse(quoteFile);
+    var list = "";
+    var quoteList = "";
+    for(var i = 0; i < quote.length; i++) {
+      list = "Quote # " + (i + 1) + ": " + quote[i].quote + ',\n\n';
+      quoteList += list;
+    }
+    //console.log(quoteList)
+    message.author.send(quoteList, {split: true});
+
+  }
 
   //Adds an image to the image array and does message things
   if(message.content.startsWith('!image add')) {
@@ -106,7 +119,7 @@ bot.on('message', message => {
     var length = findIdImage();
 
     var newImage = {
-      "id": length, 
+      "id": length,
       "image": toBeImage
     }
     addImage(newImage);
@@ -149,6 +162,20 @@ bot.on('message', message => {
     }
   }
 
+  /*if (message.content === '!imageList') {
+    var imageFile = fs.readFileSync('./images.json');
+    var image = JSON.parse(imageFile);
+    var list = "";
+    var imageList = "";
+    for(var i = 0; i < image.length; i++) {
+      list = "Image # " + (i + 1) + ": " + image[i].image + ',\n\n';
+      imageList += list;
+    }
+    //console.log(quoteList)
+    message.author.send(imageList, {split: true},);
+
+  }*/
+
   //Adds a tally to the tally array and does message things
   if(message.content.startsWith('!tally add')) {
     var toBeTally = spliceArguments(message.content)[1];
@@ -189,16 +216,55 @@ bot.on('message', message => {
     message.reply(totalTally);
   }
 
-  /*if (message.content === '!play') {
-    message.reply('joined');
-    bot.joinVoiceChannel('144570133958885376');
-    music.play('https://www.youtube.com/watch?v=TzaBak8o5UQ');
-  }*/
+  if (message.content === "!8ball") {
+    	var sayings = ["It is certain",
+										"It is decidedly so",
+										"Without a doubt",
+										"Yes, definitely",
+										"You may rely on it",
+										"As I see it, yes",
+										"Most likely",
+										"Outlook good",
+										"Yes",
+										"Signs point to yes",
+										"Reply hazy try again",
+										"Ask again later",
+										"Better not tell you now",
+										"Cannot predict now",
+										"Concentrate and ask again",
+										"Don't count on it",
+										"My reply is no",
+										"My sources say no",
+										"Outlook not so good",
+										"Very doubtful"];
+
+			var result = Math.floor((Math.random() * sayings.length) + 0);
+			bot.reply(message, sayings[result]);
+    }
+
+    if(message.content.startsWith('!lmgtfy')) {
+      var arr = message.content.split(' ');
+      arr.shift();
+      var content = arr.join('+');
+      //var query = spliceArguments(message.content)[i];
+      message.reply("http://lmgtfy.com/?q=" + content);
+    }
+
+    /*if(message.content === '!init') {
+      message.reply(server.name);
+    }*/
 
 });
 
 //For splicing of commands
 function spliceArguments(message, after) {
+  after = after || 2;
+  var rest = message.split(' ');
+  var removed = rest.splice(0, after);
+  return [removed.join(' '), rest.join(' ')];
+}
+
+function spliceArguments2(message, after) {
   after = after || 2;
   var rest = message.split(' ');
   var removed = rest.splice(0, after);
