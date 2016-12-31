@@ -21,12 +21,17 @@ bot.on('message', message => {
 
   //Displays commands
   if(message.content === "!help") {
-    var commands = ["ping: returns pong", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
+    var commands = ["ping: returns pong", "RELEASE THE KRAKEN: releases the kracken", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
                   "!quote: returns a random quote", "!image add [link]: adds an image (must be a link to an url)",
                   "!image id [id]: returns a specific image", "!image: returns a random image",
                   "!tally add [Subject]: Adds a new subject to tally",
                   "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies"];
     message.reply(commands);
+  }
+
+  //Replies with an image of a hella cute kraken
+  if(message.content === "RELEASE THE KRAKEN") {
+    message.reply("http://41.media.tumblr.com/8c9b98a7f1f363f1f05f37c0af7fc7dc/tumblr_mjxo87KyNp1rldo5co1_1280.jpg");
   }
 
   //Returns the result of a virtually flipped coin in either heads or tails
