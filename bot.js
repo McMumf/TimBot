@@ -30,7 +30,7 @@ bot.on('message', message => {
                   "!image id [id]: returns a specific image", "!image: returns a random image",
                   "!tally add [Subject]: Adds a new subject to tally",
                   "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies", "!8ball: Magic 8 Ball",
-                  "!lmgtfy: Let Me Google that for You"];
+                  "!lmgtfy: Let Me Google that for You", "!comone: replies with the gif thing"];
     message.reply(commands);
   }
 
@@ -43,6 +43,10 @@ bot.on('message', message => {
     } else {
       message.reply("Tails!");
     }
+  }
+
+  if(message.content === '!comeon') {
+    message.reply("https://68.media.tumblr.com/4568933a7abbc063c68d4f6a6e2c9ca6/tumblr_inline_ojmgz7FAnj1u40pgt_500.gif");
   }
 
   //Adds a quote to the quotes array and does message things
