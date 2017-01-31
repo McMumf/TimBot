@@ -220,7 +220,7 @@ bot.on('message', message => {
     message.reply(totalTally);
   }
 
-  if (message.content === "!8ball") {
+  if (message.content.startsWith("!8ball")) {
     	var sayings = ["It is certain",
 										"It is decidedly so",
 										"Without a doubt",
