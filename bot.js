@@ -23,6 +23,11 @@ bot.on('message', message => {
     message.reply('pong');
   }
 
+ //Releases the Kracken
+  if(message.content === 'RELEASE THE KRACKEN') {
+    message.reply('http://41.media.tumblr.com/8c9b98a7f1f363f1f05f37c0af7fc7dc/tumblr_mjxo87KyNp1rldo5co1_1280.jpg');
+  }
+
   //Displays commands
   if(message.content === "!help") {
     var commands = ["ping: returns pong", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
