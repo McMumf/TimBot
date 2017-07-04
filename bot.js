@@ -23,6 +23,10 @@ bot.on('message', message => {
     message.reply('pong');
   }
 
+  if(message.content === '!holdon') {
+    message.reply('https://m.imgur.com/gallery/T1kbk');
+  }
+
  //Releases the Kracken
   if(message.content === 'RELEASE THE KRACKEN') {
     message.reply('http://41.media.tumblr.com/8c9b98a7f1f363f1f05f37c0af7fc7dc/tumblr_mjxo87KyNp1rldo5co1_1280.jpg');
@@ -54,7 +58,8 @@ bot.on('message', message => {
                   "!image id [id]: returns a specific image", "!image: returns a random image",
                   "!tally add [Subject]: Adds a new subject to tally",
                   "!tally plus [name]: increases the tally of that person", "!tally: returns a list of all the tallies", "!8ball: Magic 8 Ball",
-                  "!lmgtfy: Let Me Google that for You", "!comone: replies with the gif thing"];
+                  "!lmgtfy: Let Me Google that for You", "!comone: replies with the gif thing",
+                  "!holdon: Returns the Yugio Card for when some weird ass shit is said"];
     message.reply(commands);
   }
 
