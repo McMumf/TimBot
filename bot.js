@@ -28,6 +28,25 @@ bot.on('message', message => {
     message.reply('http://41.media.tumblr.com/8c9b98a7f1f363f1f05f37c0af7fc7dc/tumblr_mjxo87KyNp1rldo5co1_1280.jpg');
   }
 
+  if(message.content.match('r/')) {
+    if(message.author.id != 264165857196769282 && message.author.id != 202248035709878272 ) {
+      var left = message.content.indexOf('r/');
+      var right = null;
+      for(var i = left; i < message.content.length; i++) {
+        if(message[i] === ' ') {
+          right = i;
+          break;
+        }
+      }
+      if(right === null) {
+        var string = message.content.substr(left, message.content.length-left);
+      } else {
+        var string = message.content.substr(left, right-left);
+      }
+      message.reply('https://www.reddit.com/' + string);
+    }
+  }  
+
   //Displays commands
   if(message.content === "!help") {
     var commands = ["ping: returns pong", "!quote add [quote]: Adds a new quote", "!quote id [id]: Returns a specific quote",
