@@ -3,7 +3,7 @@ var bot = new Discord.Client();
 var fs = require('fs');
 
 //Uncomment before pushing to repository
-const token = 'MjAyMjQ4MDM1NzA5ODc4Mjcy.CuKvWw.vvyeOvxAgQCfNDRdylU4m_0V_Dg'
+const token = 'MzU0MzEyODA2Njg3ODM0MTEz.DI8bDQ.nun_CQhpkbH4BvpSQlqcMIUIFTY'
 
 //Comment out before pushing to repository
 //const token = 'MjY0MTY1ODU3MTk2NzY5Mjgy.C0cnUA.kc8VXfLItsVGSm-Hzl1pfb790zI'
@@ -33,7 +33,7 @@ bot.on('message', message => {
   }
 
   if(message.content.match('r/')) {
-    if(message.author.id != 264165857196769282 && message.author.id != 202248035709878272 ) {
+    if(message.author.id != 354312806687834113 ) {
       var left = message.content.indexOf('r/');
       var right = null;
       for(var i = left; i < message.content.length; i++) {
